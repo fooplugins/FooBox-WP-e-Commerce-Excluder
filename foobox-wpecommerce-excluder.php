@@ -21,10 +21,12 @@ if ( !class_exists( 'Foobox_WPEcommerce_Excluder' ) ) {
 			add_filter( 'foobox_enqueue_styles', array($this, 'enqueue_scripts_or_styles'), 999 );
 		}
 
-		function enqueue_scripts_or_styles() {
-			global $post;
-			if (isset($post) && 'wpsc-product' === $post->post_type) return false;
-			return true;
+		function enqueue_scripts_or_styles($default) {
+			$body_classes = get_body_class();
+			if (is_array($body_classes) && in_array('single-wpsc-product', $body_classes)) {
+				return false;
+			}
+			return $default;
 		}
 	}
 }
